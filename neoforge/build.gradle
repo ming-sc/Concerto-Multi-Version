@@ -1,0 +1,40 @@
+subprojects {
+    dependencies {
+        my 'com.google.zxing:core:3.3.0'
+
+        my('com.googlecode.soundlibs:mp3spi:1.9.5.4') {
+            exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
+        }
+
+        my 'com.github.GregTaoo:JustFLAC:85f0934435'
+
+        my 'com.github.trilarion:vorbis-support:1.1.0'
+
+        my('com.googlecode.soundlibs:tritonus-all:0.3.7.2') {
+            exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
+        }
+
+        my 'net.jthink:jaudiotagger:3.0.1'
+
+        my project(":core")
+    }
+
+    shadowJar {
+        configurations = [project.configurations.my]
+        dependencies {
+            exclude(dependency('junit:junit'))
+        }
+
+        relocationPrefix = 'top.gregtao.concerto.libs'
+        enableRelocation = true
+
+        relocate 'top.gregtao.concerto.core', 'top.gregtao.concerto.core'
+
+        exclude 'META-INF/maven/**'
+        exclude 'META-INF/versions/**/*'
+
+        mergeServiceFiles()
+    }
+
+    assemble.dependsOn shadowJar
+}

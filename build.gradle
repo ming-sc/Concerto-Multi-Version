@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.1'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+dependencies {
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'idea'
+    apply plugin: 'com.gradleup.shadow'
+
+    group = 'top.gregtao'
+    version = mod_version
+
+    configurations {
+        runtimeClasspath.extendsFrom localRuntime
+        my.canBeResolved(true)
+        api.extendsFrom(my)
+    }
+
+    processResources {
+        inputs.property "version", project.version
+
+        filesMatching("META-INF/mods.toml") {
+            expand "version": project.version
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    java {
+        withSourcesJar()
+    }
+
+    jar {
+        from("LICENSE") {
+            rename { "${it}_${base.archivesName}"}
+        }
+    }
+
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
+        }
+    }
+}
