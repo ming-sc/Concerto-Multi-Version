@@ -5,15 +5,15 @@ java {
 }
 
 dependencies {
-    api "org.slf4j:slf4j-api:2.0.9"
-    api "com.google.code.gson:gson:2.10.1"
-    api "org.jetbrains:annotations:24.1.0"
-    api ("com.googlecode.soundlibs:mp3spi:1.9.5.4") {
+    implementation "org.slf4j:slf4j-api:2.0.9"
+    implementation "com.google.code.gson:gson:2.10.1"
+    implementation "org.jetbrains:annotations:24.1.0"
+    my ("com.googlecode.soundlibs:mp3spi:1.9.5.4") {
         exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
     }
-    api 'com.github.GregTaoo:JustFLAC:85f0934435'
-    api 'com.github.trilarion:vorbis-support:1.1.0'
-    api ('com.googlecode.soundlibs:tritonus-all:0.3.7.2') {
+    my 'com.github.GregTaoo:JustFLAC:85f0934435'
+    my 'com.github.trilarion:vorbis-support:1.1.0'
+    my ('com.googlecode.soundlibs:tritonus-all:0.3.7.2') {
         exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
     }
 

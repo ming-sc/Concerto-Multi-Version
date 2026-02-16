@@ -24,7 +24,7 @@ public class FixedPlaylist extends Playlist {
     }
 
     @Override
-    public Pair<ArrayList<Music>, PlaylistMetaData> loadData() {
+    Pair<ArrayList<Music>, PlaylistMetaData> loadData() {
         return null;
     }
 }

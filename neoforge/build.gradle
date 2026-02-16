@@ -1,22 +1,10 @@
 subprojects {
     dependencies {
-        my 'com.google.zxing:core:3.3.0'
-
-        my('com.googlecode.soundlibs:mp3spi:1.9.5.4') {
-            exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
+        my (project(":core")) {
+            exclude(group: 'org.slf4j', module: 'slf4j-api')
+            exclude group: 'com.google.code.gson', module: 'gson'
+            exclude group: 'org.jetbrains', module: 'annotations'
         }
-
-        my 'com.github.GregTaoo:JustFLAC:85f0934435'
-
-        my 'com.github.trilarion:vorbis-support:1.1.0'
-
-        my('com.googlecode.soundlibs:tritonus-all:0.3.7.2') {
-            exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
-        }
-
-        my 'net.jthink:jaudiotagger:3.0.1'
-
-        my project(":core")
     }
 
     shadowJar {

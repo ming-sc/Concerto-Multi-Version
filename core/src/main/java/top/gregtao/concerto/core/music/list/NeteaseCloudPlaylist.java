@@ -31,7 +31,7 @@ public class NeteaseCloudPlaylist extends Playlist {
     }
 
     @Override
-    public Pair<ArrayList<Music>, PlaylistMetaData> loadData() {
+    Pair<ArrayList<Music>, PlaylistMetaData> loadData() {
         return this.isAlbum() ? NeteaseCloudApiClient.INSTANCE.getAlbum(this.id, ClientConfig.INSTANCE.options.neteaseMusicQuality) :
                 NeteaseCloudApiClient.INSTANCE.getPlaylist(this.id, ClientConfig.INSTANCE.options.neteaseMusicQuality);
     }

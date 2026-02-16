@@ -141,7 +141,7 @@ public class KuGouMusicPlaylist extends Playlist {
     }
 
     @Override
-    public Pair<ArrayList<Music>, PlaylistMetaData> loadData() {
+    Pair<ArrayList<Music>, PlaylistMetaData> loadData() {
         return isAlbum ?
                 KuGouMusicApiClient.INSTANCE.getAlbum(this.id) :
                 KuGouMusicApiClient.INSTANCE.getPlaylist(this.id);

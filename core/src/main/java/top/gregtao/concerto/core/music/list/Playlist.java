@@ -43,8 +43,7 @@ public abstract class Playlist implements LazyLoadable, WithMetaData {
         return this.isAlbum;
     }
 
-    // TODO: change to protected
-    public abstract Pair<ArrayList<Music>, PlaylistMetaData> loadData();
+    abstract Pair<ArrayList<Music>, PlaylistMetaData> loadData();
 
     public void load() {
         if (this.loaded) return;
