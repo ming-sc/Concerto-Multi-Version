@@ -14,5 +14,6 @@ include(
         "core",
         "neoforge:neoforge-1.21.1",
         "neoforge:neoforge-1.21.2",
-        "neoforge:neoforge-1.21.4"
+        "neoforge:neoforge-1.21.4",
+        "neoforge:neoforge-1.21.6"
 )
