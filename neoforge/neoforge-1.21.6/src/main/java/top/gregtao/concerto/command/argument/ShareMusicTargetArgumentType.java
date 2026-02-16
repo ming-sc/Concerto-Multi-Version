@@ -22,8 +22,8 @@ public class ShareMusicTargetArgumentType implements ArgumentType<String> {
         return new ShareMusicTargetArgumentType();
     }
 
-    public static List<String> getPlayerNameList(CommandSourceStack source) {
-        List<String> players = new ArrayList<>(source.getOnlinePlayerNames());
+    public static List<String> getPlayerNameList(SharedSuggestionProvider provider) {
+        List<String> players = new ArrayList<>(provider.getOnlinePlayerNames());
         players.add("@a");
         return players;
     }
@@ -44,8 +44,8 @@ public class ShareMusicTargetArgumentType implements ArgumentType<String> {
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         S contextSource = context.getSource();
-        if (contextSource instanceof CommandSourceStack source) {
-            return SharedSuggestionProvider.suggest(getPlayerNameList(source), builder);
+        if (contextSource instanceof SharedSuggestionProvider provider) {
+            return SharedSuggestionProvider.suggest(getPlayerNameList(provider), builder);
         }
         return Suggestions.empty();
     }
