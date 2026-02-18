@@ -17,5 +17,6 @@ include(
         "neoforge:neoforge-1.21.4",
         "neoforge:neoforge-1.21.6",
         "neoforge:neoforge-1.21.7",
-        "neoforge:neoforge-1.21.10"
+        "neoforge:neoforge-1.21.10",
+        "neoforge:neoforge-1.21.11"
 )
