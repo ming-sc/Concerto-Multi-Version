@@ -32,26 +32,12 @@ subprojects {
         api.extendsFrom(my)
     }
 
-    processResources {
-        inputs.property "version", project.version
-
-        filesMatching("META-INF/mods.toml") {
-            expand "version": project.version
-        }
-    }
-
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
     }
 
     java {
         withSourcesJar()
-    }
-
-    jar {
-        from("LICENSE") {
-            rename { "${it}_${base.archivesName}"}
-        }
     }
 
     idea {

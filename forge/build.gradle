@@ -1,5 +1,5 @@
 subprojects {
-    project.archives_base_name = mod_name + "-neoforge"
+    project.archives_base_name = mod_name + "-forge"
 
     dependencies {
         my (project(":core")) {
@@ -7,6 +7,7 @@ subprojects {
             exclude group: 'com.google.code.gson', module: 'gson'
             exclude group: 'org.jetbrains', module: 'annotations'
         }
+        my (project(":services"))
     }
 
     shadowJar {
@@ -19,6 +20,7 @@ subprojects {
         enableRelocation = true
 
         relocate 'top.gregtao.concerto.core', 'top.gregtao.concerto.core'
+        relocate 'top.gregtao.concerto.services', 'top.gregtao.concerto.services'
 
         exclude 'META-INF/maven/**'
         exclude 'META-INF/versions/**/*'

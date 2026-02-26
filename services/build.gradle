@@ -1,0 +1,10 @@
+dependencies {
+    implementation ("com.googlecode.soundlibs:mp3spi:1.9.5.4") {
+        exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
+    }
+    implementation 'com.github.GregTaoo:JustFLAC:85f0934435'
+    implementation 'com.github.trilarion:vorbis-support:1.1.0'
+    implementation ('com.googlecode.soundlibs:tritonus-all:0.3.7.2') {
+        exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
+    }
+}

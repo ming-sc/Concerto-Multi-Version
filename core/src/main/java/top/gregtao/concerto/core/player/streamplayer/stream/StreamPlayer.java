@@ -38,8 +38,7 @@ public class StreamPlayer implements StreamPlayerInterface, Callable<Void> {
 	/**
 	 * Class logger
 	 */
-	// TODO: delete
-	public final Logger logger;
+	private final Logger logger;
 
 	// -------------------AUDIO----------------,-----
 
@@ -303,31 +302,24 @@ public class StreamPlayer implements StreamPlayerInterface, Callable<Void> {
 
 			logger.info("Entered initAudioInputStream\n");
 
-			// TODO
 			// Reset
 			reset();
-			logger.info("1");
 
 			// Notify Status
 			status = Status.OPENING;
 			generateEvent(Status.OPENING, getEncodedStreamPosition(), source);
-			logger.info("2");
 
 			// Audio resources from file||URL||inputStream.
 			audioInputStream = source.getAudioInputStream();
-			logger.info("3");
 			// Create the Line
 			createLine();
-			logger.info("4");
 
 			// Generate Open Event
 			status = Status.OPENED;
 			generateEvent(Status.OPENED, getEncodedStreamPosition(), null);
 
-//		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-		} catch (Throwable e) {
-//			logger.log(Level.INFO, e.getMessage(), e);
-			logger.info(e.getMessage());
+		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+			logger.log(Level.INFO, e.getMessage(), e);;
 			throw new StreamPlayerException(e);
 		}
 

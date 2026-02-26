@@ -23,36 +23,7 @@ public class StreamDataSource implements DataSource {
 
     @Override
     public AudioInputStream getAudioInputStream() throws UnsupportedAudioFileException, IOException {
-//        Logger logger = MusicPlayer.INSTANCE.logger;
-//        logger.info("Creating AudioInputStream from StreamDataSource");
-//
-//        final PrivilegedAction<Iterator<AudioFileReader>> psAction =
-//                new PrivilegedAction<Iterator<AudioFileReader>>() {
-//                    @Override
-//                    public Iterator<AudioFileReader> run() {
-//                        return ServiceLoader.load(AudioFileReader.class).iterator();
-//                    }
-//                };
-//        final Iterator<AudioFileReader> ps = AccessController.doPrivileged(psAction);
-//        PrivilegedAction<Boolean> hasNextAction = new PrivilegedAction<Boolean>() {
-//            @Override
-//            public Boolean run() {
-//                return ps.hasNext();
-//            }
-//        };
-//
-//        while (AccessController.doPrivileged(hasNextAction)) {
-//            try {
-//                AudioFileReader provider = ps.next();
-//                if (AudioFileReader.class.isInstance(provider)) {
-//                    logger.info("AudioInputStream created successfully using " + provider.getClass().getName());
-//                }
-//            } catch (Throwable t) {
-//            }
-//        }
-//        throw new UnsupportedAudioFileException("No suitable AudioFileReader found for the provided InputStream.");
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(source);
-//        logger.info("AudioInputStream created successfully");
         return audioInputStream;
     }
 

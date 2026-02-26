@@ -3,6 +3,11 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.neoforged.net/releases' }
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven { url = 'https://maven.parchmentmc.org' }
     }
 }
 
@@ -18,5 +23,9 @@ include(
         "neoforge:neoforge-1.21.6",
         "neoforge:neoforge-1.21.7",
         "neoforge:neoforge-1.21.10",
-        "neoforge:neoforge-1.21.11"
+        "neoforge:neoforge-1.21.11",
+        "services",
+        "forge:forge-1.20.6"
 )
+
+rootProject.name = "Concerto-Multi-Version"
