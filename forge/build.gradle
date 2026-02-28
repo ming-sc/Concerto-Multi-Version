@@ -3,7 +3,7 @@ subprojects {
 
     dependencies {
         my (project(":core")) {
-            exclude(group: 'org.slf4j', module: 'slf4j-api')
+            exclude group: 'org.slf4j', module: 'slf4j-api'
             exclude group: 'com.google.code.gson', module: 'gson'
             exclude group: 'org.jetbrains', module: 'annotations'
         }
