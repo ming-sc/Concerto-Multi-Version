@@ -71,7 +71,7 @@ public class ClientMusicNetworkHandler {
                 String code = "Concerto:Share:" +
                         Base64.getEncoder().encodeToString(object.toString().getBytes(StandardCharsets.UTF_8));
                 if (packet.to.equals("@a")) {
-                    player.connection.sendCommand(code);
+                    player.connection.sendChat(code);
                 } else {
                     player.connection.sendCommand("msg " + packet.to + " \"" + code + "\"");
                 }
