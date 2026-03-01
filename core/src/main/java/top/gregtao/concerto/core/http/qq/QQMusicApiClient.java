@@ -43,7 +43,7 @@ public class QQMusicApiClient extends HttpApiClient {
     }
 
     public String generateGuid() {
-        return String.valueOf((new Random().nextLong(1000000000L, 9999999999L)));
+        return String.valueOf((new Random().longs(1000000000L, 9999999999L)));
     }
 
     public String getQQUin() throws IOException, URISyntaxException {

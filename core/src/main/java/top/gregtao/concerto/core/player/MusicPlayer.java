@@ -329,7 +329,12 @@ public class MusicPlayer extends StreamPlayer implements StreamPlayerListener {
         ConcertoRunner.run(() -> {
             this.started = false;
             this.stop();
-            MusicPlayerHandler.INSTANCE = MusicPlayerHandler.fromRaw(ConcertoCore.MUSIC_CONFIG.read());
+            try {
+                MusicPlayerHandler.INSTANCE = MusicPlayerHandler.fromRaw(ConcertoCore.MUSIC_CONFIG.read());
+            } catch (Throwable e) {
+                ConcertoCore.CLIENT_LOGGER.error("Failed to load music playlist config!", e);
+                MusicPlayerHandler.INSTANCE = new MusicPlayerHandler();
+            }
         }, callback);
     }
 

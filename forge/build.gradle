@@ -7,7 +7,6 @@ subprojects {
             exclude group: 'com.google.code.gson', module: 'gson'
             exclude group: 'org.jetbrains', module: 'annotations'
         }
-        my (project(":services"))
     }
 
     shadowJar {
