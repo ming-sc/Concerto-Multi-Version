@@ -1,0 +1,6 @@
+top.gregtao.concerto.services.provider.FlacFormatConversionProvider
+top.gregtao.concerto.services.provider.LawDecoder
+top.gregtao.concerto.services.provider.LawEncoder
+top.gregtao.concerto.services.provider.MpegFormatConversionProvider
+top.gregtao.concerto.services.provider.PCM2PCMConversionProvider
+top.gregtao.concerto.services.provider.VorbisFormatConversionProvider

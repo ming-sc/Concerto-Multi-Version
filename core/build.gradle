@@ -6,7 +6,7 @@ java {
 
 dependencies {
     implementation "org.slf4j:slf4j-api:2.0.9"
-    implementation "com.google.code.gson:gson:2.10.1"
+    implementation "com.google.code.gson:gson:2.8.9"
     implementation "org.jetbrains:annotations:24.1.0"
     my ("com.googlecode.soundlibs:mp3spi:1.9.5.4") {
         exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
@@ -19,4 +19,13 @@ dependencies {
 
     my 'com.google.zxing:core:3.3.0'
     my 'net.jthink:jaudiotagger:3.0.1'
+}
+
+jar {
+    manifest {
+        attributes([
+                // 默认模块名 core 和 zxing 库的 core 重名, 会导致 zxing 库无法加载, 因此改为 top.gregtao.concerto.core
+                'Automatic-Module-Name': 'top.gregtao.concerto.core'
+        ])
+    }
 }

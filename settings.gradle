@@ -25,6 +25,7 @@ include(
         "neoforge:neoforge-1.21.10",
         "neoforge:neoforge-1.21.11",
         "services",
+        "forge:forge-1.18.2",
         "forge:forge-1.19.4",
         "forge:forge-1.20.1",
         "forge:forge-1.20.4",

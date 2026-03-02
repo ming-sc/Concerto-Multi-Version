@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * 酷狗 API 来自 <a href="https://github.com/MakcRe/KuGouMusicApi">MakcRe/KuGouMusicApi</a>
@@ -398,7 +399,7 @@ public class KuGouMusicApiClient extends HttpApiClient {
                 .map(data -> data.getAsJsonArray("lists"))
                 .orElse(new JsonArray());
         try {
-            return jsonArray.asList().stream()
+            return StreamSupport.stream(jsonArray.spliterator(), false)
                     .map(element -> new KuGouMusic(element.getAsJsonObject()))
                     .collect(Collectors.toList());
         } catch (Exception e) {
@@ -414,7 +415,7 @@ public class KuGouMusicApiClient extends HttpApiClient {
                 .orElse(new JsonArray());
 
         try {
-            return jsonArray.asList().stream()
+            return StreamSupport.stream(jsonArray.spliterator(), false)
                     .map(element -> new KuGouMusicPlaylist(element.getAsJsonObject(), false, false))
                     .collect(Collectors.toList());
         } catch (Exception e) {
@@ -430,7 +431,7 @@ public class KuGouMusicApiClient extends HttpApiClient {
                 .orElse(new JsonArray());
 
         try {
-            return jsonArray.asList().stream()
+            return StreamSupport.stream(jsonArray.spliterator(), false)
                     .map(element -> new KuGouMusicPlaylist(element.getAsJsonObject(), true, false))
                     .collect(Collectors.toList());
         } catch (Exception e) {
@@ -474,7 +475,7 @@ public class KuGouMusicApiClient extends HttpApiClient {
                 .orElse(PlaylistMetaData.EMPTY);
 
         ArrayList<Music> songs = data.map(json -> json.getAsJsonArray("songs"))
-                .map(jsonElements -> jsonElements.asList().stream())
+                .map(jsonElements -> StreamSupport.stream(jsonElements.spliterator(), false))
                 .map(stream -> stream.map(element -> (Music) new KuGouMusic(element.getAsJsonObject()))
                         // 由于未知原因, 歌单里会有部分歌曲被 "保护", 无法被搜索和显示
                         // 这里过滤掉这些歌曲
@@ -551,7 +552,7 @@ public class KuGouMusicApiClient extends HttpApiClient {
 
         ArrayList<Music> songs = albumSongs.map(json -> json.getAsJsonObject("data"))
                 .map(data -> data.getAsJsonArray("songs"))
-                .map(arr -> arr.asList().stream()
+                .map(arr -> StreamSupport.stream(arr.spliterator(), false)
                         .map(element -> {
                             Optional<JsonObject> songOpt = Optional.of(element.getAsJsonObject());
 

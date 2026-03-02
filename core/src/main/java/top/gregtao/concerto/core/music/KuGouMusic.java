@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class KuGouMusic extends Music implements CacheableMusic, DynamicPath {
     private final String albumAudioId;
@@ -166,7 +167,7 @@ public class KuGouMusic extends Music implements CacheableMusic, DynamicPath {
 
     public Pair<String, String> getBestLyric(JsonArray jsonArray) {
         if (jsonArray.isEmpty()) return null;
-        List<JsonElement> list = jsonArray.asList();
+        List<JsonElement> list = StreamSupport.stream(jsonArray.spliterator(), false).toList();
         Optional<JsonElement> bestLyricWithTrans = list.stream()
                 .filter(jsonElement -> {
                     Optional<JsonObject> object = Optional.of(jsonElement.getAsJsonObject());
@@ -303,7 +304,7 @@ public class KuGouMusic extends Music implements CacheableMusic, DynamicPath {
     private static Optional<List<String>> getAuthorsList(JsonObject jsonObject) {
         return Optional.ofNullable(jsonObject)
                 .map(json -> json.getAsJsonArray("authors"))
-                .map(arr -> arr.asList().stream()
+                .map(arr -> StreamSupport.stream(arr.spliterator(), false)
                         .map(JsonElement::getAsJsonObject)
                         .map(Optional::of)
                         .map(authorOpt -> Optionals
@@ -363,7 +364,7 @@ public class KuGouMusic extends Music implements CacheableMusic, DynamicPath {
                     .map(JsonElement::getAsJsonArray)
                     .map(arr ->
                             // 提取歌手名称
-                            arr.asList().stream()
+                            StreamSupport.stream(arr.spliterator(), false)
                                     .map(JsonElement::getAsJsonObject)
                                     .map(json -> json.get("name"))
                                     .filter(Objects::nonNull)
