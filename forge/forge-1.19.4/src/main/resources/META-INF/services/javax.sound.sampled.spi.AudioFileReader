@@ -1,0 +1,6 @@
+top.gregtao.concerto.services.reader.AiffAudioFileReader
+top.gregtao.concerto.services.reader.AuAudioFileReader
+top.gregtao.concerto.services.reader.FlacAudioFileReader
+top.gregtao.concerto.services.reader.MpegAudioFileReader
+top.gregtao.concerto.services.reader.VorbisAudioFileReader
+top.gregtao.concerto.services.reader.WaveAudioFileReader
