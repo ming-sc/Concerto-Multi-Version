@@ -22,6 +22,7 @@ import top.gregtao.concerto.core.http.netease.NeteaseCloudApiClient;
 import top.gregtao.concerto.core.http.qq.QQMusicApiClient;
 import top.gregtao.concerto.network.ServerMusicNetworkHandler;
 import top.gregtao.concerto.network.room.ServerMusicAgent;
+import top.gregtao.concerto.port.logging.Slf4JLoggerFactory;
 import top.gregtao.concerto.util.ComponentUtil;
 
 @Mod(value = ConcertoClient.MOD_ID)
@@ -30,7 +31,7 @@ public class ConcertoServer {
     public static Logger LOGGER = LoggerFactory.getLogger("ConcertoServer");
 
     public ConcertoServer() {
-        ConcertoCore.init(new ComponentUtil());
+        ConcertoCore.init(new ComponentUtil(), new Slf4JLoggerFactory());
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // 防止客户端重复注册
         if (FMLLoader.getDist() == Dist.DEDICATED_SERVER) {

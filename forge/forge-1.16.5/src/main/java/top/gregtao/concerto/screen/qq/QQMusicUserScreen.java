@@ -1,0 +1,80 @@
+package top.gregtao.concerto.screen.qq;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.text.TranslationTextComponent;
+import top.gregtao.concerto.core.api.WithMetaData;
+import top.gregtao.concerto.core.http.qq.QQMusicApiClient;
+import top.gregtao.concerto.core.music.list.Playlist;
+import top.gregtao.concerto.core.music.list.QQMusicPlaylist;
+import top.gregtao.concerto.core.util.ConcertoRunner;
+import top.gregtao.concerto.screen.PageScreen;
+import top.gregtao.concerto.screen.PlaylistPreviewScreen;
+import top.gregtao.concerto.screen.widget.ConcertoListWidget;
+import top.gregtao.concerto.screen.widget.MetadataListWidget;
+import top.gregtao.concerto.util.ButtonBuilder;
+import top.gregtao.concerto.util.RenderUtil;
+
+public class QQMusicUserScreen extends PageScreen {
+    private MetadataListWidget<QQMusicPlaylist> playlistList;
+
+    private <T extends WithMetaData> MetadataListWidget<T> initWidget() {
+        return new MetadataListWidget<>(this.width, 0, 20, this.height - 35, 18) {
+            @Override
+            public void onDoubleClicked(ConcertoListWidget<T>.Entry entry) {
+                Minecraft.getInstance().setScreen(new PlaylistPreviewScreen((Playlist) entry.item, QQMusicUserScreen.this));
+            }
+        };
+    }
+
+    public QQMusicUserScreen(Screen parent) {
+        super(new TranslationTextComponent("concerto.screen.user"), parent);
+    }
+
+    @Override
+    public void onPageTurned(int page) {
+        ConcertoRunner.run(() -> {
+            QQMusicApiClient.LOCAL_USER.updateLoginStatus();
+            this.playlistList.reset(QQMusicApiClient.LOCAL_USER.getUserPlaylists(), null);
+        });
+    }
+
+    private boolean loggedIn() {
+        return QQMusicApiClient.LOCAL_USER.loggedIn;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        if (!this.loggedIn()) {
+            Minecraft.getInstance().setScreen(new QQMusicLoginScreens(null));
+        }
+        this.playlistList = this.initWidget();
+
+        this.onPageTurned(0);
+        this.addWidget(this.playlistList);
+
+        this.addWidget(new ButtonBuilder(new TranslationTextComponent("concerto.screen.play"), button -> {
+            ConcertoListWidget<QQMusicPlaylist>.Entry entry = this.playlistList.getSelected();
+            if (entry != null) {
+                Minecraft.getInstance().setScreen(new PlaylistPreviewScreen(entry.item, this));
+            }
+        }).pos(this.width / 2 + 65, this.height - 30).size(50, 20).build());
+
+        this.addWidget(new ButtonBuilder(new TranslationTextComponent("concerto.screen.logout"), button -> {
+            QQMusicApiClient.LOCAL_USER.logout();
+            Minecraft.getInstance().setScreen(new QQMusicLoginScreens(this));
+        }).pos(this.width / 2 + 120, this.height - 30).size(50, 20).build());
+    }
+
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        super.render(matrices, mouseX, mouseY, delta);
+        if (!this.loggedIn()) {
+            RenderUtil.renderCenteredString(matrices, this.font, new TranslationTextComponent("concerto.screen.qq.not_login"),
+                    this.width / 2, this.height / 2, 0xffffffff);
+        }
+    }
+
+}

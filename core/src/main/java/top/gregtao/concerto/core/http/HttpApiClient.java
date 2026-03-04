@@ -1,9 +1,9 @@
 package top.gregtao.concerto.core.http;
 
 import com.google.gson.JsonObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import top.gregtao.concerto.core.logging.ILogger;
 import top.gregtao.concerto.core.config.CookieFile;
+import top.gregtao.concerto.core.logging.LoggerFactory;
 import top.gregtao.concerto.core.util.JsonUtil;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class HttpApiClient {
     private CookieManager cookieManager;
     private final CookieFile cookieFile;
     private final String name;
-    private final Logger logger;
+    private final ILogger logger;
     private final Map<String, String> defaultHeaders;
 
     public HttpApiClient(String name, Map<String, String> defaultHeaders, Map<String, List<String>> initCookies) {
@@ -59,7 +59,7 @@ public class HttpApiClient {
         return this.client;
     }
 
-    public Logger getLogger() {
+    public ILogger getLogger() {
         return this.logger;
     }
 

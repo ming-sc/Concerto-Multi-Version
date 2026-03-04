@@ -1,22 +1,24 @@
 package top.gregtao.concerto.core;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import top.gregtao.concerto.core.logging.ILogger;
 import top.gregtao.concerto.core.bridge.ComponentImpl;
 import top.gregtao.concerto.core.bridge.IComponent;
 import top.gregtao.concerto.core.config.ConfigFile;
+import top.gregtao.concerto.core.logging.EmptyLogger;
+import top.gregtao.concerto.core.logging.ILoggerFactory;
+import top.gregtao.concerto.core.logging.LoggerFactory;
 
 public class ConcertoCore {
-    // TODO: 抽象 Logger
-    public static Logger CLIENT_LOGGER = LoggerFactory.getLogger("ConcertoCoreClient");
+    public static ILogger CLIENT_LOGGER = new EmptyLogger();
 
-    public static Logger SERVER_LOGGER = LoggerFactory.getLogger("ConcertoCoreServer");
-
-    public static Logger LOGGER = LoggerFactory.getLogger("ConcertoCore");
+    public static ILogger SERVER_LOGGER = new EmptyLogger();
 
     public static final ConfigFile MUSIC_CONFIG = new ConfigFile("Concerto/musics.json");
 
-    public static void init(IComponent component) {
+    public static void init(IComponent component, ILoggerFactory loggerFactory) {
         ComponentImpl.init(component);
+        LoggerFactory.setLoggerFactory(loggerFactory);
+        CLIENT_LOGGER = LoggerFactory.getLogger("ConcertoCore Client");
+        SERVER_LOGGER = LoggerFactory.getLogger("ConcertoCore Server");
     }
 }
