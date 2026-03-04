@@ -94,7 +94,7 @@ public class KuGouMusic extends Music implements CacheableMusic, DynamicPath {
     public Map<Level, String> updateHashMap() {
         Optional<JsonObject> optional = KuGouMusicApiClient.INSTANCE.getMusicHash(this.hash);
         optional.map(json -> json.getAsJsonArray("data"))
-                .map(dataArray -> !dataArray.isEmpty() ? dataArray.get(0).getAsJsonObject() : null)
+                .map(dataArray -> dataArray.size() > 0 ? dataArray.get(0).getAsJsonObject() : null)
                 .ifPresent(data -> {
                     for (Level level : Level.values()) {
                         JsonElement jsonElement = data.get(level.getKey());
@@ -166,7 +166,7 @@ public class KuGouMusic extends Music implements CacheableMusic, DynamicPath {
     }
 
     public Pair<String, String> getBestLyric(JsonArray jsonArray) {
-        if (jsonArray.isEmpty()) return null;
+        if (jsonArray.size() == 0) return null;
         List<JsonElement> list = StreamSupport.stream(jsonArray.spliterator(), false).toList();
         Optional<JsonElement> bestLyricWithTrans = list.stream()
                 .filter(jsonElement -> {

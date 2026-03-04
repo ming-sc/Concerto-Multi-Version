@@ -87,7 +87,7 @@ public class KuGouLyricsUtil {
                 .map(lyric -> lyric.getAsJsonArray("lyricContent"))
                 .map(arr -> StreamSupport.stream(arr.spliterator(), false)
                         .map(JsonElement::getAsJsonArray)
-                        .map(timeAndLyric -> timeAndLyric.isEmpty() ? "" : timeAndLyric.get(0).getAsString())
+                        .map(timeAndLyric -> timeAndLyric.size() == 0 ? "" : timeAndLyric.get(0).getAsString())
                         .collect(Collectors.toList())
                 )
                 .orElse(new ArrayList<>());

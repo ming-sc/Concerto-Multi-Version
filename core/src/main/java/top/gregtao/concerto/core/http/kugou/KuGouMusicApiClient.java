@@ -312,7 +312,7 @@ public class KuGouMusicApiClient extends HttpApiClient {
         if (TextUtil.isEmpty(hash)) return Optional.empty();
         return getSongUrl(hash, isFreePart)
                 .map(songUrlResponse -> songUrlResponse.getAsJsonArray("url"))
-                .map(url -> !url.isEmpty() ? url.get(0).getAsString() : null)
+                .map(url -> url.size() > 0 ? url.get(0).getAsString() : null)
                 .map(link -> !link.isEmpty() ? link : null );
     }
 
@@ -385,7 +385,7 @@ public class KuGouMusicApiClient extends HttpApiClient {
 
         if (json != null) {
             JsonArray dataArray = json.getAsJsonArray("data");
-            if (dataArray != null && !dataArray.isEmpty()) {
+            if (dataArray != null && dataArray.size() > 0) {
                 return Optional.ofNullable(dataArray.get(0).getAsJsonObject());
             }
         }
@@ -546,7 +546,7 @@ public class KuGouMusicApiClient extends HttpApiClient {
         Optional<JsonObject> albumSongs = getAlbumSongs(id);
 
         PlaylistMetaData playlistMetaData = albumDetail.map(json -> json.getAsJsonArray("data"))
-                .map(arr -> !arr.isEmpty() ? arr.get(0).getAsJsonObject() : null)
+                .map(arr -> arr.size() > 0 ? arr.get(0).getAsJsonObject() : null)
                 .map(KuGouMusicPlaylist::parseAlbumInfo)
                 .orElse(PlaylistMetaData.EMPTY);
 

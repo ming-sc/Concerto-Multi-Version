@@ -6,7 +6,7 @@ java {
 
 dependencies {
     implementation "org.slf4j:slf4j-api:2.0.9"
-    implementation "com.google.code.gson:gson:2.8.9"
+    implementation "com.google.code.gson:gson:2.8.0"
     implementation "org.jetbrains:annotations:24.1.0"
     my ("com.googlecode.soundlibs:mp3spi:1.9.5.4") {
         exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
@@ -17,7 +17,7 @@ dependencies {
         exclude group: 'com.googlecode.soundlibs', module: 'tritonus-share'
     }
 
-    my 'com.google.zxing:core:3.3.0'
+    my 'com.google.zxing:core:3.5.4'
     my 'net.jthink:jaudiotagger:3.0.1'
 }
 

@@ -7,6 +7,7 @@ import top.gregtao.concerto.core.bridge.IComponent;
 import top.gregtao.concerto.core.config.ConfigFile;
 
 public class ConcertoCore {
+    // TODO: 抽象 Logger
     public static Logger CLIENT_LOGGER = LoggerFactory.getLogger("ConcertoCoreClient");
 
     public static Logger SERVER_LOGGER = LoggerFactory.getLogger("ConcertoCoreServer");

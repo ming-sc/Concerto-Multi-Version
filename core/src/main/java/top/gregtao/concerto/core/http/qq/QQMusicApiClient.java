@@ -91,7 +91,7 @@ public class QQMusicApiClient extends HttpApiClient {
                     JsonObject midUrlInfo = data.getAsJsonArray("midurlinfo").get(0).getAsJsonObject();
                     String link = midUrlInfo.get("purl").getAsString();
                     JsonArray sip = data.getAsJsonArray("sip");
-                    if (sip.isJsonArray() && !sip.isEmpty() && !link.isEmpty()) {
+                    if (sip.isJsonArray() && !sip.isJsonNull() && !link.isEmpty()) {
                         return Pair.of(sip.get(0).getAsString() + link, level.getSuffix());
                     }
                 }
@@ -309,7 +309,7 @@ public class QQMusicApiClient extends HttpApiClient {
         JsonArray array = this.requestSignedApi("music.musichallAlbum.AlbumSongList", "GetAlbumSongList", "\"albumMid\":\"" + mid + "\",\"albumID\":0,\"begin\":0,\"num\":99999,\"order\":2").getAsJsonObject("data").getAsJsonArray("songList");
         ArrayList<Music> musics = new ArrayList<>();
         PlaylistMetaData metaData = PlaylistMetaData.EMPTY;
-        if (!array.isEmpty()) {
+        if (!array.isJsonNull() && array.size() > 0) {
             JsonObject object = array.get(0).getAsJsonObject().getAsJsonObject("songInfo"), album = object.getAsJsonObject("album");
             metaData = new PlaylistMetaData(
                     object.getAsJsonArray("singer").get(0).getAsJsonObject().get("name").getAsString(),
