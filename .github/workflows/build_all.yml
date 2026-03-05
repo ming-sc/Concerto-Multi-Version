@@ -1,7 +1,11 @@
 name: Build All
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -26,16 +30,33 @@ jobs:
           chmod +x ./gradlew
           ./gradlew build
 
-      - name: Upload Forge Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Process Artifacts
+        run: |
+          mkdir -p output
+          
+          TAG_NAME="${GITHUB_REF_NAME}"
+          echo "Tag: $TAG_NAME"
+          
+          VERSION="${TAG_NAME#v}"
+          
+          if [[ "$VERSION" == *"-"* ]]; then
+            SUFFIX="-${VERSION#*-}"
+          else
+            SUFFIX=""
+          fi
+          
+          echo "Suffix: $SUFFIX"
+          
+          find forge neoforge -type f -path "*/build/libs/*-all.jar" | while read FILE; do
+            BASENAME=$(basename "$FILE")
+            NEW_NAME="${BASENAME/-all/$SUFFIX}"
+            echo "Renaming $BASENAME -> $NEW_NAME"
+            cp "$FILE" "output/$NEW_NAME"
+          done
+          
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: forge-artifacts
-          path: |
-            forge/forge-*/build/libs/*-all.jar
-
-      - name: Upload NeoForge Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: neoforge-artifacts
-          path: |
-            neoforge/neoforge-*/build/libs/*-all.jar
+          files: output/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
