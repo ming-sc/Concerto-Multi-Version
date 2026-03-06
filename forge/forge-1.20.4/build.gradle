@@ -116,6 +116,12 @@ reobf {
     shadowJar {}
 }
 
+tasks.named('compileJava') {
+    // 强制重新编译和生成 refmap.json 文件, 从车万女仆模组复制
+    // 感谢 dsx137, 感谢酒石酸菌
+    outputs.upToDateWhen { false }
+}
+
 tasks.named('jar', Jar).configure {
     manifest {
         attributes([
