@@ -84,7 +84,7 @@ jobs:
               continue
             fi
 
-            VERSION_NUMBER=$(echo "$NAME" | sed -E 's/^Concerto-(forge|neoforge)-//')
+            VERSION_NUMBER=$(echo "$NAME" | sed -E 's/^Concerto-//')
 
             MC_VERSION=$(echo "$VERSION_NUMBER" | sed -E 's/.*-mc([0-9\.]+).*/\1/')
 
