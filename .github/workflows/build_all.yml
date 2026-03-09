@@ -60,3 +60,61 @@ jobs:
           files: output/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Modrinth
+        if: ${{ github.event_name == 'release' && github.event.release.prerelease == false }}
+        run: |
+          PROJECT_ID="A0VZd1kW"
+          VERSION_TYPE="release"
+
+          CHANGELOG=$(jq -Rs . <<< "${{ github.event.release.body }}")
+
+          for FILE in output/*.jar; do
+            BASENAME=$(basename "$FILE")
+            NAME="${BASENAME%.jar}"
+
+            echo "Processing $BASENAME"
+
+            if [[ "$BASENAME" == *"-forge-"* ]]; then
+              LOADER="forge"
+            elif [[ "$BASENAME" == *"-neoforge-"* ]]; then
+              LOADER="neoforge"
+            else
+              echo "Unknown loader, skipping"
+              continue
+            fi
+
+            VERSION_NUMBER=$(echo "$NAME" | sed -E 's/^Concerto-(forge|neoforge)-//')
+
+            MC_VERSION=$(echo "$VERSION_NUMBER" | sed -E 's/.*-mc([0-9\.]+).*/\1/')
+
+            echo "Loader: $LOADER"
+            echo "Version: $VERSION_NUMBER"
+            echo "MC Version: $MC_VERSION"
+
+            GAME_VERSIONS=$(jq -c --arg v "$MC_VERSION" '.[$v] // [$v]' .github/modrinth_game_versions.json)
+
+            echo "Game Versions: $GAME_VERSIONS"
+
+            curl --location 'https://api.modrinth.com/v2/version' \
+              --header "Authorization: $MODRINTH_TOKEN" \
+              --form "data={
+                \"name\": \"$NAME\",
+                \"version_number\": \"$VERSION_NUMBER\",
+                \"changelog\": $CHANGELOG,
+                \"dependencies\": [],
+                \"game_versions\": $GAME_VERSIONS,
+                \"version_type\": \"$VERSION_TYPE\",
+                \"loaders\": [\"$LOADER\"],
+                \"featured\": false,
+                \"status\": \"listed\",
+                \"requested_status\": null,
+                \"project_id\": \"$PROJECT_ID\",
+                \"file_parts\": [\"$BASENAME\"],
+                \"primary_file\": \"$BASENAME\"
+              }" \
+              --form "file=@$FILE"
+
+          done
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
