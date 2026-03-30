@@ -252,6 +252,7 @@
   "concerto.agent.not_available": "点歌服务不可用",
   "concerto.agent.error": "使用点歌服务时遇到错误",
   "concerto.agent.add.too_quick": "请求过于频繁！请在 %d 秒后重试",
+  "concerto.agent.network.unstable": "网络不稳定，音乐播放已暂停。将在60秒后重试。",
 
   "concerto.error.invalid_path": "不可用的路径或文件格式",
   "concerto.error.unsupported_operation": "不支持的操作！",
