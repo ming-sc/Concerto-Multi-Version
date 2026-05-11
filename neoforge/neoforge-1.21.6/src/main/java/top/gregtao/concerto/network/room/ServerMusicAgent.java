@@ -48,6 +48,36 @@ public class ServerMusicAgent {
     public ArrayList<Music> freeTimePlaylist = new ArrayList<>();
     private int freeTimePlaylistIndex = 0;
 
+    private int consecutiveSkips = 0;
+    private static final int MAX_SKIPS = 3;
+    private ScheduledFuture<?> recoveryFuture;
+
+    private void handleSkip(String logMsg, Object... args) {
+        ConcertoServer.LOGGER.warn(logMsg, args);
+        this.broadcast(Component.translatable("concerto.agent.play.failed",
+                this.currentMusic.getMeta().title(), this.currentMusic.getMeta().author()));
+
+        this.consecutiveSkips++;
+        if (this.consecutiveSkips >= MAX_SKIPS) {
+            ConcertoServer.LOGGER.warn("Too many consecutive skips, pausing music agent for 60 seconds");
+            this.broadcast(Component.translatable("concerto.agent.network.unstable"));
+            this.isPlaying.set(false);
+            this.currentMusic = null;
+            this.currentSharedMusic = null;
+            // 计划恢复任务
+            if (this.recoveryFuture != null && !this.recoveryFuture.isDone()) {
+                this.recoveryFuture.cancel(false);
+            }
+            this.recoveryFuture = this.musicScheduler.schedule(() -> {
+                ConcertoServer.LOGGER.info("Attempting to resume music agent after network issue");
+                this.consecutiveSkips = 0;
+                this.schedulePlayNext(0, false);
+            }, 60, TimeUnit.SECONDS);
+        } else {
+            this.schedulePlayNext(0, false);
+        }
+    }
+
     public void stop() {
         if (this.isStopped.get()) return;
         this.isStopped.set(true);
@@ -157,6 +187,13 @@ public class ServerMusicAgent {
             } else {
                 ConcertoServer.LOGGER.info("Start playing music {}, duration {}",
                         this.currentMusic.getMeta().title(), this.currentMusic.getMeta().getDuration());
+
+                // 检查元数据是否完整，在获取元数据后立即检查时长
+                if (this.currentMusic.getMeta().getDuration() == null) {
+                    handleSkip("Duration missing for music {}, skipping", this.currentMusic.getMeta().title());
+                    return;
+                }
+
                 if (ServerConfig.INSTANCE.options.musicAgentUseShared && this.currentMusic instanceof DynamicPath dynamicPath) {
                     String path = dynamicPath.updateRawPath();
                     if (path != null) {
@@ -173,6 +210,14 @@ public class ServerMusicAgent {
                 } else {
                     this.currentSharedMusic = this.currentMusic;
                 }
+
+                // 正常播放，重置跳过计数器
+                this.consecutiveSkips = 0;
+                if (this.recoveryFuture != null && !this.recoveryFuture.isDone()) {
+                    this.recoveryFuture.cancel(false);
+                    this.recoveryFuture = null;
+                }
+
                 this.isPlaying.set(true);
                 this.playTime = System.currentTimeMillis();
                 ServerMusicNetworkHandler.musicAgentSendMusic(this.getMembers(), this.currentSharedMusic);
@@ -257,12 +302,17 @@ public class ServerMusicAgent {
         if (this.voteFuture != null) {
             this.voteFuture.cancel(true);
         }
+        if (this.recoveryFuture != null) {
+            this.recoveryFuture.cancel(true);
+            this.recoveryFuture = null;
+        }
         this.musicQueue.clear();
         this.currentMusic = this.currentSharedMusic = null;
         this.totalBytes = 0;
         this.playTime = 0;
         this.isPlaying.set(false);
         this.currentlyFreeTime.set(false);
+        this.consecutiveSkips = 0;
 
         ConcertoServer.LOGGER.info("Reset server music agent");
     }
