@@ -1,6 +1,6 @@
 # Concerto-Multi-Version
 
-移植 [GreTaoo/Concerto](https://github.com/GregTaoo/Concerto) 到 Forge / NeoForge.
+移植 [GregTaoo/Concerto](https://github.com/GregTaoo/Concerto) 到 Forge / NeoForge.
 
 ## 版本支持情况
 
