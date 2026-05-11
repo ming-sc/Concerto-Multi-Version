@@ -1,5 +1,8 @@
 # Concerto-Multi-Version
 
+> [!NOTE]
+> [原项目](https://github.com/GregTaoo/Concerto)已支持 Forge / NeoForge, 故本仓库归档
+
 移植 [GregTaoo/Concerto](https://github.com/GregTaoo/Concerto) 到 Forge / NeoForge.
 
 ## 版本支持情况
